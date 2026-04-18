@@ -1,0 +1,38 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.idx
+*.ilg
+*.ind
+*.nav
+*.snm
+*.vrb
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# SU2 output (simulation artifacts, not to be committed)
+*.csv
+*.vtu
+*.dat
+history*.csv
+restart_*.dat
+solution_*.dat
+flow.vtu
+surface_flow.vtu
+
+# OS
+.DS_Store
+Thumbs.db
