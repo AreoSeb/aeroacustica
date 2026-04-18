@@ -18,18 +18,31 @@ Riprodurre al CFD il setup sperimentale Huawei per validare il solutore SU2 su g
 
 ```
 aeroacustica/
-├── main.pdf              # Documento tecnico completo (34 pagine)
-├── main.tex              # Sorgente LaTeX del paper
-├── figs/                 # Figure PNG (8 figure, 180 DPI)
-├── configs/              # Template SU2 v8 .cfg per ogni fase
-│   ├── rans_baseline.cfg # RANS k-omega SST (L1-L3)
-│   ├── urans_sst.cfg     # URANS SST (L2, Δt=1e-5 s)
-│   ├── ddes_sa.cfg       # DDES Spalart-Allmaras (L3, Δt=5e-6 s)
-│   └── les_wrles.cfg     # LES wall-resolved WALE (L5, Δt=5e-7 s, FW-H)
+├── main.pdf                           # Documento tecnico principale (34 pagine)
+├── main.tex                           # Sorgente LaTeX del paper principale
+├── addendum_acoustic_models.pdf       # Addendum: DDES + FW-H vs APE (23 pagine)
+├── addendum_acoustic_models.tex       # Sorgente LaTeX addendum
+├── figs/                              # Figure PNG paper principale (8 file, 180 DPI)
+├── figs_v2/                           # Figure PNG addendum (5 file)
+├── configs/                           # Template SU2 v8 .cfg per ogni fase
+│   ├── rans_baseline.cfg              # RANS k-omega SST (L1-L3)
+│   ├── urans_sst.cfg                  # URANS SST (L2, Δt=1e-5 s)
+│   ├── ddes_sa.cfg                    # DDES Spalart-Allmaras (L3, Δt=5e-6 s)
+│   └── les_wrles.cfg                  # LES wall-resolved WALE (L5, Δt=5e-7 s, FW-H)
 ├── scripts/
-│   └── make_figures.py   # Rigenera le 8 figure matplotlib
-└── LICENSE               # MIT
+│   ├── make_figures.py                # Rigenera 8 figure paper principale
+│   └── make_figures_v2.py             # Rigenera 5 figure addendum
+└── LICENSE                            # MIT
 ```
+
+## Addendum tecnico: DDES + FW-H vs APE
+
+Il file `addendum_acoustic_models.pdf` approfondisce:
+- **Setup DDES completo** (Fase 4 pipeline): Spalart-Allmaras con funzione f_d, criteri f_d≥0.95, check MSD, listing .cfg commentato riga per riga
+- **Confronto FW-H vs APE** (Acoustic Perturbation Equations, Ewert-Schröder 2003): tabella 12 aspetti, trade-off accuratezza/costo, rifrazione e diffrazione
+- **Raccomandazione per Huawei**: FW-H per Fase 1 (validazione), APE per Fase 2 (ottimizzazione con mesh cubica — dove diffrazione conta)
+- **APE non è nativo in SU2**: 3 opzioni implementative (A: coupling libAcoustics OpenFOAM 2-4 settimane, B: solver Python custom 6-10 settimane, C: fork C++ SU2 4-6 mesi). Opzione A raccomandata.
+
 
 ## Pipeline di validazione (6 fasi)
 
