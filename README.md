@@ -22,8 +22,11 @@ aeroacustica/
 ├── main.tex                           # Sorgente LaTeX del paper principale
 ├── addendum_acoustic_models.pdf       # Addendum: DDES + FW-H vs APE (23 pagine)
 ├── addendum_acoustic_models.tex       # Sorgente LaTeX addendum
+├── convergence.pdf                    # Paper didattico criteri di convergenza (25 pagine)
+├── convergence.tex                    # Sorgente LaTeX paper convergenza
 ├── figs/                              # Figure PNG paper principale (8 file, 180 DPI)
 ├── figs_v2/                           # Figure PNG addendum (5 file)
+├── figs_conv/                         # Figure PNG paper convergenza (9 file)
 ├── configs/                           # Template SU2 v8 .cfg per ogni fase
 │   ├── rans_baseline.cfg              # RANS k-omega SST (L1-L3)
 │   ├── urans_sst.cfg                  # URANS SST (L2, Δt=1e-5 s)
@@ -31,9 +34,35 @@ aeroacustica/
 │   └── les_wrles.cfg                  # LES wall-resolved WALE (L5, Δt=5e-7 s, FW-H)
 ├── scripts/
 │   ├── make_figures.py                # Rigenera 8 figure paper principale
-│   └── make_figures_v2.py             # Rigenera 5 figure addendum
+│   ├── make_figures_v2.py             # Rigenera 5 figure addendum
+│   └── make_figures_conv.py           # Rigenera 9 figure paper convergenza
 └── LICENSE                            # MIT
 ```
+
+## Paper didattico: criteri di convergenza
+
+Il file `convergence.pdf` (25 pagine) è una guida step-by-step pensata per uno
+studente al primo contatto con SU2, che integra le scelte fatte nel main paper
+con la loro giustificazione metodologica:
+
+- **Quattro livelli di convergenza** (iterativa, di griglia, temporale, statistica)
+  con indicatori, soglie e ricette correttive per ognuno
+- **Residui RMS**: lettura in scala log, quattro storie tipiche (good, plateau,
+  LCO, divergente) e interpretazione
+- **Numero di CFL**: cuore della stabilità, CFL adattivo, configurazione
+  `CFL_ADAPT_PARAM` step-by-step
+- **Dual time-stepping**: lettura dei residui interni (URANS/DDES/LES), trade-off
+  `INNER_ITER` vs costo
+- **Grid Convergence Index** (Celik 2008) con esempio numerico esplicito sul caso
+  Huawei (L1, L2, L3, GCI=1.33%)
+- **Vincoli sul Δt**: CFL convettivo, Nyquist, 20 punti/periodo, Kolmogorov
+- **Convergenza statistica LES**: running mean, test del semi-intervallo,
+  preflush
+- **Welch PSD**: bias-variance trade-off per il post-processing FW-H
+- **y+ a parete**: istogramma e CDF, criterio 95% celle entro target
+- **Workflow decisionale** (flowchart) e tabella diagnostica con 10 sintomi
+  comuni e ricette
+- **Checklist riassuntiva** pre/durante/post simulazione
 
 ## Addendum tecnico: DDES + FW-H vs APE
 
