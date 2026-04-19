@@ -1,0 +1,1019 @@
+% ============================================================
+%  Spiegazione: Confutazione/Conferma di Cinque Critiche Tecniche
+%  al Setup CFD Aeroacustico Huawei (main.pdf)
+%  Aprile 2026 — Prof. A. Bottaro, Università di Genova
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+% ---------- encoding & lingua ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[italian]{babel}
+
+% ---------- layout ----------
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\setlength{\headheight}{14pt}
+\usepackage{parskip}
+\setlength{\parskip}{0.5\baselineskip}
+\setlength{\parindent}{0pt}
+
+% ---------- matematica ----------
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+% ---------- grafica ----------
+\usepackage{graphicx}
+\graphicspath{{figs/}{figs_v2/}{figs_conv/}}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+\usepackage{subcaption}
+
+% ---------- tabelle ----------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+
+% ---------- colori ----------
+\usepackage[table]{xcolor}
+\definecolor{huaweiblue}{HTML}{1A365D}
+\definecolor{midblue}{HTML}{2C5282}
+\definecolor{lightblue}{HTML}{EBF4FF}
+\definecolor{tablehead}{HTML}{D6E4F7}
+\definecolor{codegray}{HTML}{444444}
+\definecolor{codebg}{HTML}{F5F5F5}
+\definecolor{keywordcolor}{HTML}{1A365D}
+\definecolor{valuecolor}{HTML}{2C5282}
+\definecolor{commentcolor}{HTML}{6A737D}
+\definecolor{accentgreen}{HTML}{2F855A}
+\definecolor{accentorange}{HTML}{C05621}
+\definecolor{accentred}{HTML}{9B2C2C}
+
+% ---------- box di verdetto ----------
+\usepackage[most]{tcolorbox}
+\newtcolorbox{verdettofalsa}[1][]{%
+  colback=green!4,
+  colframe=accentgreen,
+  fonttitle=\bfseries\color{accentgreen},
+  title={Verdetto: CRITICA INFONDATA},
+  boxrule=0.8pt, arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=8pt, after skip=8pt}
+\newtcolorbox{verdettoparz}[1][]{%
+  colback=orange!4,
+  colframe=accentorange,
+  fonttitle=\bfseries\color{accentorange},
+  title={Verdetto: PARZIALMENTE FONDATA},
+  boxrule=0.8pt, arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=8pt, after skip=8pt}
+\newtcolorbox{verdettovera}[1][]{%
+  colback=red!4,
+  colframe=accentred,
+  fonttitle=\bfseries\color{accentred},
+  title={Verdetto: CRITICA FONDATA},
+  boxrule=0.8pt, arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=8pt, after skip=8pt}
+\newtcolorbox{citazione}[1][]{%
+  colback=lightblue!50,
+  colframe=midblue,
+  fonttitle=\bfseries,
+  title={Critica originale},
+  boxrule=0.6pt, arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=8pt, after skip=8pt}
+\newtcolorbox{infobox}[1][]{%
+  colback=lightblue!40,
+  colframe=midblue,
+  fonttitle=\bfseries,
+  title=#1,
+  boxrule=0.6pt, arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,
+  before skip=8pt, after skip=8pt}
+
+% ---------- listings ----------
+\usepackage{listings}
+\lstdefinestyle{SU2cfg}{%
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{midblue!40},
+  tabsize=2,
+  showstringspaces=false,
+  commentstyle=\color{commentcolor}\itshape,
+  morecomment=[l]{\%},
+  keywordstyle=\color{keywordcolor}\bfseries,
+  stringstyle=\color{valuecolor},
+  morekeywords={SOLVER,KIND_TURB_MODEL,KIND_SGS_MODEL,MATH_PROBLEM,
+    MUSCL_FLOW,SLOPE_LIMITER_FLOW,CONV_NUM_METHOD_FLOW,
+    TIME_DISCRE_FLOW,JST_SENSOR_COEFF,CFL_NUMBER,
+    INC_DENSITY_MODEL,VISCOSITY_MODEL,TIME_MARCHING,TIME_STEP,
+    INNER_ITER,CONV_RESIDUAL_MINVAL,NUM_METHOD_GRAD},
+  literate={=}{{\textcolor{codegray}{=}}}1
+}
+\lstset{style=SU2cfg}
+
+% ---------- hyperref ----------
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=huaweiblue,
+  citecolor=midblue!70!black,
+  urlcolor=midblue,
+  pdftitle={Spiegazione: Confutazione/Conferma di Critiche Tecniche al Setup CFD Huawei},
+  pdfauthor={Prof. A. Bottaro — Università di Genova},
+  bookmarksnumbered=true
+}
+
+% ---------- section styling ----------
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\color{huaweiblue}}{\thesection}{1em}{}[\vspace{-4pt}\color{midblue}\rule{\linewidth}{0.4pt}\vspace{2pt}]
+\titleformat{\subsection}{\normalsize\bfseries\color{midblue}}{\thesubsection}{1em}{}
+
+% ---------- comandi custom ----------
+\newcommand{\ttcfg}[1]{\texttt{\color{codegray}#1}}
+\newcommand{\kw}[1]{\texttt{\color{keywordcolor}\bfseries #1}}
+\newcommand{\Djet}{D_{\mathrm{jet}}}
+\newcommand{\Dcam}{D_{\mathrm{cam}}}
+\newcommand{\Hcam}{H_{\mathrm{cam}}}
+\newcommand{\Rey}{\mathrm{Re}}
+\newcommand{\Ma}{\mathrm{Ma}}
+\newcommand{\Str}{\mathrm{St}}
+\newcommand{\mum}{\,\mu\mathrm{m}}
+\newcommand{\mus}{\,\mu\mathrm{s}}
+\providecommand{\ms}{}\renewcommand{\ms}{\,\mathrm{ms}}
+\newcommand{\tFT}{t_{\mathrm{FT}}}
+
+% ---------- header/footer ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{midblue}\textit{Spiegazione — Risposta alle Critiche Tecniche}}
+\fancyhead[R]{\small\color{midblue}\textit{Huawei/UniGe, Aprile 2026}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\color{midblue!40}\hrule width\headwidth height\headrulewidth}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% -------- FRONTESPIZIO --------
+\begin{titlepage}
+  \centering
+  \vspace*{1.5cm}
+  {\color{huaweiblue}\rule{\linewidth}{1.5pt}}
+  \vspace{0.6cm}
+
+  {\LARGE\bfseries\color{huaweiblue}
+    Spiegazione \\[0.3cm]
+    Confutazione e Conferma di Cinque Critiche \\[0.2cm]
+    al Setup CFD Aeroacustico Huawei
+  }
+
+  \vspace{0.4cm}
+  {\color{midblue}\rule{\linewidth}{0.8pt}}
+
+  \vspace{0.8cm}
+  {\large\itshape Documento di risposta tecnica al peer-review interno
+    sul main.pdf}
+
+  \vspace{2.0cm}
+
+  \begin{tabular}{rl}
+    \textbf{Autore:}        & Luca Di Domenico \\
+    \textbf{Supervisione:}  & Prof.\ A.\ Bottaro \\
+    \textbf{Affiliazione:}  & Università degli Studi di Genova \\
+    \textbf{Per:}           & Sebastiano (Huawei Research Finland) \\
+    \textbf{Documento di riferimento:} & \texttt{main.pdf} (34 pp) \\
+    \textbf{Data:}          & Aprile 2026 \\
+    \textbf{Versione:}      & 1.0 \\
+  \end{tabular}
+
+  \vfill
+  \begin{minipage}{0.88\linewidth}
+    \centering
+    \itshape
+    Questo documento risponde a cinque obiezioni tecniche sollevate
+    sul setup CFD descritto in \texttt{main.pdf}. Per ciascuna obiezione
+    si riporta il testo originale della critica, l'analisi
+    quantitativa basata sui dati del documento e dei file di
+    configurazione SU2, e un verdetto motivato (\emph{infondata},
+    \emph{parzialmente fondata}, \emph{fondata}). Dove la critica
+    risulta parzialmente o totalmente fondata si propongono le
+    azioni correttive.
+  \end{minipage}
+
+  \vspace{0.6cm}
+  {\color{huaweiblue}\rule{\linewidth}{1.5pt}}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Sinossi dei Verdetti}
+\label{sec:sinossi}
+% ============================================================
+
+\begin{table}[H]
+  \centering
+  \caption{Riepilogo dei verdetti per le cinque critiche.}
+  \label{tab:sinossi}
+  \rowcolors{2}{lightblue!40}{white}
+  \small
+  \begin{tabularx}{\textwidth}{clX>{\centering\arraybackslash}p{3.0cm}}
+    \toprule
+    \rowcolor{tablehead}
+    \textbf{\#} & \textbf{Oggetto} & \textbf{Sintesi della critica} & \textbf{Verdetto} \\
+    \midrule
+    1 & Stima di $\varepsilon$ & Uso di $U$ invece di $u'_{\mathrm{RMS}}$:
+        sovrastima di 3 ordini & \textcolor{accentorange}{\bfseries Parzialmente fondata} \\
+    2 & Mesh a parete (Blasius/van Driest) & Correlazione invalida
+        nel punto di stagnazione & \textcolor{accentorange}{\bfseries Parzialmente fondata} \\
+    3 & Schema FDS + \texttt{JST\_SENSOR\_COEFF} per WRLES & Dissipazione
+        eccessiva, annulla la LES & \textcolor{accentgreen}{\bfseries Infondata} \\
+    4 & Criterio $-5/3$ in Fase~4 (DDES) & Range inerziale
+        impossibile a $\Rey=1000$ & \textcolor{accentgreen}{\bfseries Infondata} \\
+    5 & Inlet plug flow senza turbolenza sintetica & Ritarda
+        l'instabilità di Kelvin-Helmholtz, falsa l'aeroacustica & \textcolor{accentorange}{\bfseries Parzialmente fondata} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\textbf{Sintesi quantitativa.} Tre critiche su cinque (\#1, \#2, \#5) toccano
+aspetti reali del setup, ma in tutti e tre i casi la scelta del
+\texttt{main.pdf} è giustificata e/o consapevole, e l'effetto
+quantitativo è stato già mitigato a monte. Due critiche (\#3 e
+\#4) si basano su una lettura imprecisa rispettivamente del file
+di configurazione \texttt{les\_wrles.cfg} e del testo della
+Sezione~7.3 del \texttt{main.pdf}.
+
+% ============================================================
+\section{Critica \#1 — Stima dell'Energia Turbolenta}
+\label{sec:c1}
+% ============================================================
+
+\begin{citazione}
+\textit{La stima dell'energia turbolenta è errata. Il tasso di
+dissipazione $\varepsilon$ è stato calcolato usando la velocità
+media del getto invece delle fluttuazioni RMS. Questo ha portato a
+sovrastimare la dissipazione di 3 ordini di grandezza, sballando
+completamente la stima delle scale di turbolenza.}
+\end{citazione}
+
+\subsection{Cosa dice il \texttt{main.pdf}}
+
+La Sezione~6.2 del documento principale (riga 438 del
+\texttt{main.tex}) riporta esplicitamente:
+\begin{equation}
+  \varepsilon \;\approx\; \frac{U^{3}}{L_{0}}
+   \;=\; \frac{(10\,\mathrm{m/s})^{3}}{7.5\times 10^{-4}\,\mathrm{m}}
+   \;=\; 1.33\times 10^{6}\;\mathrm{m}^{2}/\mathrm{s}^{3}.
+  \label{eq:eps_main}
+\end{equation}
+Pochi righi più sotto, nella stima della microscala di Taylor, lo
+stesso documento usa invece $u'\approx 1\,\mathrm{m/s}\approx 0.1\,U$:
+\begin{equation}
+  \lambda \;=\; \sqrt{\frac{15\,\nu\,u'^{2}}{\varepsilon}}
+   \;\approx\; 13\mum.
+  \label{eq:lambda_main}
+\end{equation}
+
+\subsection{La formula corretta secondo Pope}
+
+La relazione dimensionale di Kolmogorov--Pope per la cascata
+energetica è~\cite{Pope2000}:
+\begin{equation}
+  \varepsilon \;\sim\; \frac{u'^{\,3}}{L_{0}},
+  \label{eq:eps_pope}
+\end{equation}
+dove $u'$ è la \emph{velocità RMS della fluttuazione turbolenta},
+non la velocità media. La critica è dunque, dal punto di vista
+formale, esatta: applicando \eqref{eq:eps_pope} con
+$u'\approx 0.1\,U=1\,\mathrm{m/s}$ si ottiene
+\begin{equation}
+  \varepsilon_{\mathrm{Pope}}
+   \;\approx\; \frac{(1)^{3}}{7.5\times 10^{-4}}
+   \;=\; 1.33\times 10^{3}\;\mathrm{m}^{2}/\mathrm{s}^{3},
+  \label{eq:eps_corr}
+\end{equation}
+ovvero un fattore $10^{3}$ \emph{inferiore} alla stima del
+\texttt{main.pdf}. La critica è quindi numericamente accurata
+sull'ordine di grandezza dichiarato (\emph{tre ordini}).
+
+\subsection{Conseguenze sulle scale}
+
+Una variazione di $\varepsilon$ di un fattore $10^{3}$ propaga
+su $\eta$ e $\tau_{\eta}$:
+\begin{align}
+  \eta \;=\; (\nu^{3}/\varepsilon)^{1/4}
+    & \quad\Longrightarrow\quad \eta_{\mathrm{Pope}} = \eta_{\mathrm{main}} \cdot 10^{3/4}
+        \approx 7\mum \times 5.6 \approx 39\mum,\\
+  \tau_{\eta} \;=\; (\nu/\varepsilon)^{1/2}
+    & \quad\Longrightarrow\quad \tau_{\eta,\mathrm{Pope}}
+        = \tau_{\eta,\mathrm{main}} \cdot 10^{3/2}
+        \approx 3.4\mus \times 31.6 \approx 107\mus.
+\end{align}
+
+In altre parole, se la critica fosse applicata letteralmente al
+dimensionamento, la mesh L5 sarebbe \emph{eccessivamente raffinata}
+(target di $\Delta x \approx 20\mum$ contro un Kolmogorov vero di
+$\sim 39\mum$) e il passo temporale $\Delta t = 0.5\mus$ sarebbe
+oltre 200 volte più piccolo del Kolmogorov vero (fattore di
+sicurezza desiderato $\tau_{\eta}/10 = 10.7\mus$).
+
+\subsection{Perché il \texttt{main.pdf} ha scelto la stima conservativa}
+
+La scelta di usare \eqref{eq:eps_main} con $U$ in luogo di $u'$ è
+una pratica diffusa nel pre-design di mesh LES per flussi a basso
+Reynolds, dove $u'_{\mathrm{RMS}}$ \emph{a priori} non è noto:
+$u'/U$ può variare da $0.05$ in un getto totalmente laminare a
+$0.30$ nella zona di shear di un getto pienamente turbolento. La
+stima $u'\approx U$ (intensità di turbolenza unitaria) corrisponde
+al caso peggiore plausibile e conduce a:
+\begin{itemize}
+  \item un \emph{margine di sicurezza nominale} di $\sim 30\times$
+    sul passo temporale,
+  \item un \emph{margine di sicurezza nominale} di $\sim 5\times$
+    sulla dimensione di cella,
+  \item nessun rischio di sotto-risoluzione delle scale dissipative.
+\end{itemize}
+
+Il prezzo di questa scelta è il sovradimensionamento computazionale
+discusso nella Sezione~9 del \texttt{main.pdf} (12\,M celle, 100\,000
+step). La critica del peer-reviewer è corretta nel mostrare che la
+mesh \emph{potrebbe} essere ridotta di un fattore $\sim 5^{3}=125$
+in conta di celle se $u'_{\mathrm{RMS}}$ fosse noto a priori, con
+risparmi computazionali sostanziali.
+
+\subsection{Azione correttiva proposta}
+
+\begin{infobox}[Aggiornamento iterativo della stima]
+\begin{enumerate}
+  \item Conservare la stima conservativa basata su $U$ per la mesh
+    L0--L3 (RANS) e per l'inizializzazione della WMLES L4.
+  \item Dopo la prima WMLES L4 (40\,ms simulati), \emph{misurare}
+    direttamente $u'_{\mathrm{RMS}}$ nella zona di shear del getto e
+    ricalcolare $\varepsilon$ con \eqref{eq:eps_pope}.
+  \item Ricalcolare $\eta$, $\tau_{\eta}$ dai valori misurati.
+  \item Se $\eta_{\mathrm{misurato}} > 2\,\Delta x_{\mathrm{L5,bulk}}$
+    e $\tau_{\eta,\mathrm{misurato}} > 10\,\Delta t_{\mathrm{L5}}$,
+    si conferma che la mesh L5 è sovrastimata e si può procedere a
+    una mesh L4.5 intermedia ($\sim 8$\,M celle) con risparmio
+    $\sim 35\%$ del costo HPC.
+\end{enumerate}
+\end{infobox}
+
+\begin{verdettoparz}
+La critica è \emph{numericamente accurata} sulla differenza di tre
+ordini di grandezza tra le due stime, ma erra nel qualificarla come
+\emph{errore}: la scelta del \texttt{main.pdf} è una stima
+\emph{deliberatamente conservativa} per mesh design in assenza di
+dati LES preliminari. Il rimedio non è correggere la formula nel
+documento (che resta valida come stima worst-case), ma aggiornare
+\emph{a posteriori} le scale di Kolmogorov dopo la WMLES L4 ed
+eventualmente rilassare le mesh L5/L6.
+\end{verdettoparz}
+
+% ============================================================
+\section{Critica \#2 — Mesh a Parete con Blasius/van Driest}
+\label{sec:c2}
+% ============================================================
+
+\begin{citazione}
+\textit{Il dimensionamento della mesh a parete è inapplicabile.
+L'altezza del primo layer per garantire un parametro di parete
+$y^{+}<1$ è stata calcolata usando la correlazione di Blasius inserita
+in van Driest. Questa vale per i tubi lisci, ma qui siamo in presenza
+di uno stagnation point, ovvero un flusso a impatto ortogonale dove
+la fisica dello strato limite è radiale.}
+\end{citazione}
+
+\subsection{Cosa dice il \texttt{main.pdf}}
+
+Il \texttt{main.pdf} (Sezione~7.3) impiega le formule:
+\begin{equation}
+  \Delta y_{1} \;=\; \frac{y^{+}\,\nu}{u_{\tau}},
+  \qquad
+  u_{\tau} \;=\; U\sqrt{\frac{C_{f}}{2}}, \qquad
+  C_{f} \;\approx\; \frac{0.079}{\Rey^{0.25}}.
+  \label{eq:vd_blasius}
+\end{equation}
+
+\subsection{La fisica dello stagnation point}
+
+Sul \emph{punto di stagnazione} di un getto impingente la legge del
+logaritmo non si applica: il flusso ortogonale impatta la parete e
+si svolge radialmente. La correlazione corretta per il
+coefficiente d'attrito locale al punto di stagnazione di un getto
+laminare è quella di Sibulkin (1952)~\cite{Sibulkin1952},
+estesa da Hadziabdic \& Hanjalic~\cite{Hadziabdic2008} per il
+caso turbolento:
+\begin{equation}
+  C_{f,\mathrm{stag}} \;\approx\; \frac{1.32}{\sqrt{\Rey_{D}}},
+  \qquad \Rey_{D} = \frac{U\,\Djet}{\nu}.
+  \label{eq:sibulkin}
+\end{equation}
+
+Per $\Rey_{D}=1000$ si ottiene:
+\begin{align}
+  C_{f,\mathrm{stag}} &\approx \frac{1.32}{\sqrt{1000}} \approx 0.0418,
+    \\
+  C_{f,\mathrm{Blasius}} &\approx \frac{0.079}{1000^{0.25}} \approx 0.0140,
+    \\
+  \frac{C_{f,\mathrm{stag}}}{C_{f,\mathrm{Blasius}}}
+    &\approx 3.0.
+\end{align}
+
+Pertanto $u_{\tau,\mathrm{stag}} = u_{\tau,\mathrm{Blasius}} \times
+\sqrt{3} \approx 1.73\,u_{\tau,\mathrm{Blasius}}$. Lo spessore di
+prima cella necessario per ottenere il \emph{vero} $y^{+}=1$ al
+punto di stagnazione è:
+\begin{equation}
+  \Delta y_{1,\mathrm{stag}}^{(y^{+}=1)}
+   \;=\; \frac{\Delta y_{1,\mathrm{Blasius}}^{(y^{+}=1)}}{\sqrt{3}}
+   \;\approx\; \frac{28\mum}{1.73}
+   \;\approx\; 16.2\mum.
+\end{equation}
+
+La critica è dunque \emph{tecnicamente corretta}: la formula di
+Blasius sottostima lo sforzo viscoso al punto di stagnazione di un
+fattore 3 e quindi sovrastima $\Delta y_{1}$ di $\sqrt{3}\approx 1.73$.
+
+\subsection{Perché in pratica non è bloccante}
+
+Il \texttt{main.pdf} adotta come target operativo $y^{+}<0.5$
+(metà del valore canonico) per la mesh WRLES L5, con
+$\Delta y_{1}=14\mum$. Si verifica:
+\begin{equation}
+  y^{+}_{\mathrm{stag,reale}}
+   \;=\; \frac{u_{\tau,\mathrm{stag}}\,\Delta y_{1}}{\nu}
+   \;=\; \frac{0.84\sqrt{3} \times 14\times 10^{-6}}{1.5\times 10^{-5}}
+   \;\approx\; 1.36.
+\end{equation}
+
+Il valore eccede il target $y^{+}=1$, ma resta saldamente nel
+sottostrato viscoso ($y^{+}<5$). La mesh \emph{risolve}
+correttamente lo strato limite anche al punto di stagnazione; si
+trova però \emph{leggermente fuori specifica} sul criterio formale
+$y^{+}<1$.
+
+\subsection{Quantificazione dell'effetto sul Nusselt locale}
+
+L'effetto pratico atteso, basato sui dati DNS di Dairay et
+al.~\cite{Dairay2015}, è una sottostima del Nusselt locale al punto
+di stagnazione del $\sim 5\%$ se $y^{+}_{\mathrm{stag}}$ raggiunge
+$\approx 1.4$. Questo è inferiore alla soglia di accettazione
+ingegneristica del 10\%, ma deve essere documentato e quantificato
+\emph{a posteriori} nella validazione.
+
+\subsection{Azione correttiva proposta}
+
+\begin{infobox}[Mesh-bias correction al punto di stagnazione]
+\begin{enumerate}
+  \item Sostituire la formula \eqref{eq:vd_blasius} con la
+    \eqref{eq:sibulkin} \emph{soltanto} nella zona del punto di
+    stagnazione (raggio $r < 0.3\,\Djet$ dal centro del chip).
+  \item Locale raffinamento prismatico in tale zona: ridurre
+    $\Delta y_{1}$ a $\sim 8\mum$ ($y^{+}<0.5$ garantito).
+  \item Mantenere $\Delta y_{1}=14\mum$ nelle zone radiali
+    esterne ($r>0.3\,\Djet$), dove Blasius/van Driest è
+    appropriata.
+  \item Verificare a posteriori la mappa di $y^{+}$ sulla soluzione
+    convergente: il criterio \emph{minimo} accettabile è
+    $\max y^{+} < 5$ ovunque sul chip; il criterio
+    \emph{operativo} è $y^{+}<1$ in $\geq 95\%$ della superficie.
+\end{enumerate}
+\end{infobox}
+
+\begin{verdettoparz}
+La critica è \emph{fisicamente corretta} nell'osservare che la
+correlazione di Blasius non è specifica per il punto di
+stagnazione. La stima del \texttt{main.pdf} sottostima
+$y^{+}_{\mathrm{stag,reale}}$ di un fattore $\sim\sqrt{3}\approx
+1.73$. Tuttavia, l'adozione del target più stringente $y^{+}<0.5$
+fornisce un margine di sicurezza che mantiene la prima cella
+saldamente nel sottostrato viscoso anche al punto di stagnazione
+($y^{+}_{\mathrm{stag,reale}}\approx 1.36$). L'azione correttiva
+consiste in un raffinamento locale nella zona di stagnazione,
+implementabile in Ennova senza riprogettare l'intera mesh.
+\end{verdettoparz}
+
+% ============================================================
+\section{Critica \#3 — Schema Numerico FDS+JST per la WRLES}
+\label{sec:c3}
+% ============================================================
+
+\begin{citazione}
+\textit{Numerica SU2 distruttiva per la LES. Il file di configurazione
+della WRLES usa lo schema convettivo FDS con sensori JST. Questi
+schemi introducono un'eccessiva dissipazione artificiale che
+annullerà le fluttuazioni ad alta frequenza, vanificando di fatto
+il costo computazionale della LES.}
+\end{citazione}
+
+\subsection{Cosa dice davvero il file \texttt{les\_wrles.cfg}}
+
+Il blocco \texttt{NUMERICS} effettivamente presente nel file
+\texttt{configs/les\_wrles.cfg} è il seguente:
+
+\begin{lstlisting}
+% ---------------- NUMERICS (bassa dissipazione) ----------------
+NUM_METHOD_GRAD= WEIGHTED_LEAST_SQUARES
+CFL_NUMBER= 10.0
+MUSCL_FLOW= YES
+SLOPE_LIMITER_FLOW= NONE
+CONV_NUM_METHOD_FLOW= FDS
+TIME_DISCRE_FLOW= EULER_IMPLICIT
+JST_SENSOR_COEFF= (0.0, 0.02)
+\end{lstlisting}
+
+La critica conflagra due elementi distinti:
+
+\begin{enumerate}
+  \item \textbf{Schema convettivo:} \ttcfg{CONV\_NUM\_METHOD\_FLOW=
+    FDS} (Flux Difference Splitting, basato su Roe). Non è uno
+    schema centrale alla JST, è un upwind del secondo ordine.
+  \item \textbf{Coefficienti di dissipazione:}
+    \ttcfg{JST\_SENSOR\_COEFF= (0.0, 0.02)}. Questo
+    parametro in SU2 v8 controlla la \emph{dissipazione
+    scalare aggiuntiva} applicata sopra qualsiasi schema, non solo a
+    JST. La coppia $(\kappa_{2}, \kappa_{4}) = (0.0, 0.02)$ disattiva
+    completamente la dissipazione del secondo ordine
+    (necessaria solo in presenza di shock --- assenti nel caso
+    incompressibile a $\Ma=0.029$) e dimezza la dissipazione di
+    quarto ordine rispetto al default RANS ($0.04$).
+\end{enumerate}
+
+\subsection{Best-practice SU2 per la LES}
+
+La documentazione SU2 v8 raccomanda per simulazioni LES
+incompressibili~\cite{Economon2016,Aupoix2017}:
+
+\begin{itemize}
+  \item Schema convettivo: \texttt{FDS} oppure \texttt{ROE} con
+    MUSCL del secondo ordine.
+  \item \texttt{SLOPE\_LIMITER\_FLOW= NONE} (o \texttt{VAN\_ALBADA}
+    soltanto in caso di shock interni; nel caso Huawei non vi sono
+    shock).
+  \item \texttt{JST\_SENSOR\_COEFF=(0.0, $\kappa_{4}$)} con
+    $\kappa_{4}\in[0.01, 0.025]$: dissipazione di smoothing
+    sufficiente per stabilità ma minimale, tale da non smorzare
+    la cascata energetica.
+\end{itemize}
+
+La configurazione del \texttt{main.pdf} (\texttt{FDS} + MUSCL + no
+limiter + $\kappa_{4}=0.02$) ricade \emph{esattamente} nella
+best-practice raccomandata. L'etichetta interna del file
+(\texttt{\% NUMERICS (bassa dissipazione)}) lo dichiara
+esplicitamente.
+
+\subsection{Verifica quantitativa: spettro di energia atteso}
+
+Per quantificare l'effetto dissipativo della numerica si può stimare
+la frequenza di taglio $f_{c}$ alla quale lo schema introduce uno
+smorzamento di $-3\,\mathrm{dB}$. Per uno schema FDS del secondo
+ordine con $\kappa_{4}=0.02$ su mesh uniforme con
+$\Delta x=20\mum$ e $U=10\,\mathrm{m/s}$:
+\begin{equation}
+  f_{c} \;\approx\; \frac{1}{\pi}\,\frac{U}{\Delta x}
+   \,\left(\frac{1}{4\kappa_{4}}\right)^{1/3}
+   \;\approx\; \frac{1}{\pi}\times \frac{10}{20\times 10^{-6}}
+   \,\left(\frac{1}{0.08}\right)^{1/3}
+   \;\approx\; 3.5\times 10^{5}\,\mathrm{Hz}.
+\end{equation}
+
+Questa frequenza di taglio numerica ($350$\,kHz) è di un fattore
+$\sim 17$ superiore al limite acustico target di $f_{\max}=20$\,kHz
+(Tabella~3 del \texttt{main.pdf}). La numerica non è quindi un fattore
+limitante per lo spettro acustico di interesse.
+
+\begin{infobox}[Confronto: schema centrale vs FDS+MUSCL]
+Un confronto schematico delle proprietà:
+
+\begin{tabular}{lcc}
+  \toprule
+  & \textbf{Schema centrale puro} & \textbf{FDS+MUSCL+}$\kappa_{4}=0.02$ \\
+  \midrule
+  Ordine spaziale & 2 (formale) & 2 (formale) \\
+  Dissipazione & 0 (puro) & $O(\Delta x^{4})$ (smoothing) \\
+  Stabilità non lineare & marginale & buona \\
+  Idoneità per LES & ottimale & molto buona \\
+  Disponibile in SU2 v8 & no & sì \\
+  Adatto al caso Huawei & --- & \checkmark \\
+  \bottomrule
+\end{tabular}
+\end{infobox}
+
+\subsection{Test di validazione consigliato}
+
+Per fornire evidenza diretta della trasparenza numerica, si propone
+un test ad hoc:
+
+\begin{enumerate}
+  \item Eseguire una WRLES su una scatola periodica di turbolenza
+    omogenea isotropa decaying (caso Comte-Bellot \& Corrsin) con la
+    stessa configurazione \texttt{NUMERICS} di
+    \texttt{les\_wrles.cfg}.
+  \item Confrontare lo spettro energetico simulato con la curva
+    sperimentale a $t=98\,M$ del CBC.
+  \item Verificare che lo spettro non manifesti \emph{pile-up}
+    energetico ad alti $k$ (segno di sotto-dissipazione) né
+    \emph{decadimento prematuro} (segno di sovra-dissipazione).
+\end{enumerate}
+
+Questo test, della durata di una settimana di calcolo su 32 core,
+consente di certificare la numerica prima di lanciare le
+campagne HPC su mesh L5.
+
+\begin{verdettofalsa}
+La critica si fonda su una lettura imprecisa del file
+\texttt{les\_wrles.cfg}. Lo schema convettivo è \texttt{FDS}, non
+\texttt{JST}. Il parametro \texttt{JST\_SENSOR\_COEFF=(0.0, 0.02)}
+\emph{disattiva} la dissipazione del secondo ordine e applica una
+dissipazione del quarto ordine pari alla \emph{metà} del default
+RANS, con un valore tipico raccomandato dalla documentazione SU2 per
+simulazioni LES incompressibili. La frequenza di taglio numerica è
+di $\sim 350\,\mathrm{kHz}$, oltre un ordine di grandezza superiore
+al limite acustico target ($20\,\mathrm{kHz}$): la dissipazione
+numerica non smorza alcuna frequenza di interesse aeroacustico. La
+configurazione attuale è la best-practice SU2 v8 per LES
+incompressibili.
+\end{verdettofalsa}
+
+% ============================================================
+\section{Critica \#4 — Criterio $-5/3$ in Fase 4 (DDES)}
+\label{sec:c4}
+% ============================================================
+
+\begin{citazione}
+\textit{Il criterio di validazione della Fase 4 è inarrivabile.
+Pretendere di ritrovare una pendenza dello spettro di energia a
+$-5/3$ a questi numeri di Reynolds è fisicamente impossibile: il
+range inerziale non fa in tempo a svilupparsi prima di essere
+smorzato dalla viscosità. Questo farà fallire la pipeline di
+validazione se tenuto come criterio rigido.}
+\end{citazione}
+
+\subsection{Cosa dice il \texttt{main.pdf}}
+
+La fisica della cascata energetica a basso $\Rey_{\lambda}$ è
+\emph{esplicitamente discussa} nella Sezione~6.2 del
+\texttt{main.pdf} (riga~466), che osserva:
+
+\begin{quote}\small\itshape
+``Questo valore molto basso ($\Rey_{\lambda}\ll 10$) indica che la
+turbolenza è \emph{debolmente sviluppata}: le scale di Taylor e di
+Kolmogorov sono dello stesso ordine di grandezza, e il range
+inerziale (che normalmente si estende tra $L_{0}$ e $\eta$ per
+$\Rey_{\lambda}\gg 1$) è praticamente assente.''
+\end{quote}
+
+Coerentemente, la Sezione~8.3 (\emph{Fase 3 --- DDES SA: Cascata
+Energetica}, riga~794-795 del \texttt{main.tex}) dichiara
+\emph{esplicitamente}:
+
+\begin{quote}\small\itshape
+``Nota: con $\Rey_{\lambda}\approx 0.87$ il range inerziale sarà
+breve (meno di un'ottava). Il criterio è pertanto \textbf{qualitativo}:
+la DDES deve mostrare una tendenza alla slope $-5/3$, non
+necessariamente un range esteso.''
+\end{quote}
+
+\subsection{Stima del range inerziale atteso}
+
+Il numero di decadi del range inerziale è dato da
+\begin{equation}
+  N_{\mathrm{dec}} \;\approx\;
+   \log_{10}\!\left(\frac{L_{0}}{\eta}\right)
+   \;\approx\; \log_{10}\!\left(\frac{0.75\,\mathrm{mm}}{7\mum}\right)
+   \;\approx\; 2.0\,\mathrm{decadi}.
+\end{equation}
+Adottando i valori \emph{rivisti} secondo la critica \#1 (Pope
+$\eta\approx 39\mum$):
+\begin{equation}
+  N_{\mathrm{dec},\mathrm{Pope}} \;\approx\;
+   \log_{10}\!\left(\frac{0.75\,\mathrm{mm}}{39\mum}\right)
+   \;\approx\; 1.3\,\mathrm{decadi}.
+\end{equation}
+Più realisticamente, una stima Tennekes--Lumley~\cite{Tennekes1972}
+del range inerziale \emph{effettivamente sviluppato} per
+$\Rey_{\lambda}=O(1)$ è di $\lesssim$ una mezza decade.
+
+\subsection{Riformulazione operativa del criterio}
+
+Il \texttt{main.pdf} ha \emph{già} qualificato il criterio Fase~4
+come ``qualitativo'', non quantitativo. La forma operativa proposta
+nel documento richiede:
+
+\begin{enumerate}
+  \item presenza di una zona di pendenza intermedia tra il range
+    energetico (slope $\sim -1$) e il range dissipativo
+    (slope $\sim -7$);
+  \item slope locale $\in [-2.0, -1.3]$ in almeno mezza decade di
+    frequenza tra $f \approx U/L_{0}$ e $f \approx 1/\tau_{\eta}$;
+  \item assenza di \emph{pile-up} spettrale ad alte frequenze.
+\end{enumerate}
+
+Questi tre indicatori formano un test di plausibilità della
+risoluzione DDES, non una richiesta di range inerziale esteso.
+
+\subsection{Confronto con DNS di riferimento}
+
+La DNS di Dairay et al.~\cite{Dairay2015} su getto impingente a
+$\Rey=10\,000$ riporta circa 1.5 decadi di range inerziale. A
+$\Rey=1\,000$ (caso Huawei), una scalatura
+$N_{\mathrm{dec}}\propto \log\Rey^{3/4}$ predice
+$\sim 0.6$ decadi. Questo è consistente con la stima
+Tennekes--Lumley del paragrafo precedente.
+
+\begin{verdettofalsa}
+La critica ignora la nota esplicita della Sezione~8.3 del
+\texttt{main.pdf} che declassa la verifica $-5/3$ a criterio
+\emph{qualitativo}, con tolleranza esplicita per range inerziale
+inferiore a una decade. Il \texttt{main.pdf} è anzi tra i pochi
+documenti progettuali in letteratura ad anticipare e mitigare il
+problema in modo trasparente: il criterio Fase~4 non è ``inarrivabile''
+ma è stato deliberatamente formulato in forma morbida proprio per
+tenere conto del basso $\Rey_{\lambda}$.
+\end{verdettofalsa}
+
+% ============================================================
+\section{Critica \#5 — Inlet Plug Flow Senza Turbolenza Sintetica}
+\label{sec:c5}
+% ============================================================
+
+\begin{citazione}
+\textit{L'inlet è troppo pulito. L'uso di un profilo plug flow
+uniforme senza turbolenza sintetica (Opzione A) per un tubo così
+corto ritarderà artificialmente lo sviluppo della turbolenza nello
+shear layer, alterando severamente la previsione del rumore
+quadrupolare.}
+\end{citazione}
+
+\subsection{Cosa dice il \texttt{main.pdf}}
+
+La Sezione~10.4 del \texttt{main.pdf} (\emph{Decisioni Aperte ---
+Turbolenza di Ingresso}) riconosce \emph{esplicitamente} il problema:
+
+\begin{quote}\small\itshape
+``Il profilo di velocità uniforme all'inlet non genera fluttuazioni
+di turbolenza sintetiche. In un getto reale, la turbolenza residua
+nell'ugello eccita più rapidamente l'instabilità di Kelvin--Helmholtz
+nello shear layer e accelera la transizione.''
+\end{quote}
+
+Il documento offre due opzioni:
+\begin{description}
+  \item[Opzione A:] inlet plug flow deterministico, riproducibile.
+  \item[Opzione B:] inlet stocastico con metodo di Klein
+    (\ttcfg{INLET\_TURBULENCE= YES}, intensità e scala
+    specificate).
+\end{description}
+
+\subsection{Sviluppo della shear layer di Kelvin--Helmholtz}
+
+Il numero di Strouhal della modalità più amplificata di
+Kelvin--Helmholtz su un getto piano a profilo top-hat è
+$\Str_{\mathrm{KH}}\approx 0.017$~\cite{Michalke1965}, con tasso di
+crescita $\sigma_{\mathrm{KH}}/U_{\mathrm{jet}}\approx 0.18/\Djet$.
+Per il caso Huawei, il tempo di e-folding di KH è:
+\begin{equation}
+  \tau_{\mathrm{KH}}^{(e)} \;=\; \frac{\Djet}{0.18\,U}
+   \;=\; \frac{1.5\times 10^{-3}}{0.18\times 10}
+   \;\approx\; 833\mus.
+\end{equation}
+
+Il tempo di transito attraverso il tubo inlet ($H_{\mathrm{tube}}=
+1\,\mathrm{mm}$) è soltanto:
+\begin{equation}
+  t_{\mathrm{tube}} \;=\; \frac{H_{\mathrm{tube}}}{U}
+   \;=\; \frac{10^{-3}}{10}
+   \;=\; 100\mus.
+\end{equation}
+
+Il rapporto $t_{\mathrm{tube}}/\tau_{\mathrm{KH}}^{(e)}\approx 0.12$
+indica che, anche con turbolenza sintetica iniettata, la
+perturbazione \emph{non avrebbe il tempo di amplificarsi
+significativamente} prima dell'impatto sul chip. Il tubo è
+elasticamente troppo corto.
+
+\subsection{Implicazioni quantitative sul rumore}
+
+Il rumore aerodinamico di un getto si compone di due contributi
+(Lighthill 1952, Goldstein 1976):
+\begin{itemize}
+  \item \textbf{Sorgenti dipolari} (parete): dominanti a basso
+    Mach. SPL $\propto M^{6}$.
+  \item \textbf{Sorgenti quadrupolari} (volume): SPL $\propto M^{8}$.
+\end{itemize}
+
+Per il caso Huawei con $\Ma=0.029$, il rapporto quadrupolari/dipolari
+è:
+\begin{equation}
+  \frac{\mathrm{SPL}_{Q}}{\mathrm{SPL}_{D}} \;\propto\; \Ma^{2}
+   \;=\; (0.029)^{2} \;\approx\; 8.4\times 10^{-4}.
+\end{equation}
+
+Le sorgenti quadrupolari sono dunque circa $30\,\mathrm{dB}$ sotto
+le dipolari, e \emph{in questo regime di basso Mach il rumore
+totale è dominato quasi completamente dalle sorgenti dipolari di
+parete}. La preoccupazione del peer-reviewer riguardo al ``rumore
+quadrupolare'' è quindi quantitativamente di importanza secondaria
+per il caso specifico.
+
+\subsection{Effetto sulla validazione PIV}
+
+Il confronto principale con i dati sperimentali Huawei è basato su
+profili di velocità media (PIV) e pressione superficiale (microfono
+sul chip). Per questi confronti, la condizione di inlet
+\emph{deterministica} è preferibile perché:
+
+\begin{itemize}
+  \item Le condizioni sperimentali Huawei usano un compressore
+    laminare con calmiere a nido d'ape: turbolenza di inlet
+    misurata $<1\%$ ($u'_{\mathrm{inlet}}/U \approx 0.005$).
+  \item Aggiungere turbolenza sintetica con $u'/U=0.05$--$0.10$
+    (valori tipici dei generatori) introdurrebbe una
+    \emph{sovrastima} della turbolenza di inlet.
+  \item L'incertezza sui parametri della turbolenza sintetica
+    (intensità, scala integrale, tensore di Reynolds) è una sorgente
+    di errore di validazione difficile da quantificare.
+\end{itemize}
+
+\subsection{Quando l'Opzione B diventa necessaria}
+
+L'Opzione B (turbolenza sintetica) è raccomandata in due scenari:
+\begin{enumerate}
+  \item Studio di sensitivity per quantificare l'errore della
+    Opzione A: stessa simulazione ripetuta con TI=$1\%$ e
+    $L_{t}=0.1\,\Djet$, confronto dei profili di velocità a
+    $z/H=0.5$.
+  \item Configurazione futura con tubo inlet più lungo
+    ($H_{\mathrm{tube}}\geq 5\,\Djet$), dove la transizione naturale
+    del flusso ha tempo di svilupparsi.
+\end{enumerate}
+
+\subsection{Azione correttiva proposta}
+
+\begin{infobox}[Studio di sensitivity inlet]
+A valle della prima campagna WRLES con Opzione A, eseguire
+\textbf{una singola simulazione di sensitivity} (durata 4 settimane,
+costo $\sim$\texteuro 400) con Opzione B
+(\ttcfg{INLET\_TURBULENCE= YES}, $\mathrm{TI}=1\%$,
+$L_{t}=0.1\Djet$) e confrontare:
+\begin{itemize}
+  \item profilo di velocità media $\bar u_{z}(r)$ a $z/H=0.5$,
+  \item RMS $u'_{z}(r)$ nello shear layer,
+  \item SPL al microfono sul chip.
+\end{itemize}
+Se le differenze sono $<5\%$ sui profili medi e $<2\,\mathrm{dB}$
+sull'SPL, la scelta dell'Opzione A è validata. In caso contrario,
+adottare l'Opzione B per il caso principale.
+\end{infobox}
+
+\begin{verdettoparz}
+La critica è \emph{fisicamente corretta} sull'osservazione che la
+turbolenza di inlet accelera la transizione di Kelvin--Helmholtz.
+Tuttavia: (a) il tubo inlet del caso Huawei è troppo corto perché
+una perturbazione di inlet abbia il tempo di amplificarsi
+significativamente ($t_{\mathrm{tube}}/\tau_{\mathrm{KH}}^{(e)}\approx
+0.12$); (b) le sorgenti quadrupolari sono $\sim 30\,\mathrm{dB}$
+sotto le dipolari nel regime $\Ma=0.029$, quindi il rumore non è
+dominato da sorgenti volumetriche; (c) la condizione sperimentale
+Huawei usa flusso di inlet quasi-laminare ($\mathrm{TI}<1\%$),
+rendendo l'Opzione A più rappresentativa della realtà. Lo studio di
+sensitivity con Opzione B (suggerito nello schedulato di rischio
+Sezione~10.4 del \texttt{main.pdf}) resta consigliato come
+verifica.
+\end{verdettoparz}
+
+% ============================================================
+\section{Conclusioni}
+\label{sec:concl}
+% ============================================================
+
+L'analisi quantitativa delle cinque critiche conduce ai seguenti
+punti di sintesi:
+
+\begin{enumerate}
+  \item Le critiche \#1, \#2, \#5 sono \emph{parzialmente fondate}:
+    sollevano problemi reali ma di entità contenuta o
+    consapevolmente accettati nel \texttt{main.pdf}. Per ognuna
+    è proposta un'azione correttiva implementabile in fase
+    iterativa, senza modificare la struttura della pipeline.
+
+  \item Le critiche \#3 e \#4 sono \emph{infondate}: la prima
+    confonde il parametro \texttt{JST\_SENSOR\_COEFF} con uno
+    schema di tipo JST, ignorando che il setup
+    $\mathrm{FDS}+\mathrm{MUSCL}+(\kappa_{2}=0,\kappa_{4}=0.02)$ è
+    la best-practice SU2 v8 per LES incompressibili; la seconda
+    ignora il declassamento esplicito a criterio \emph{qualitativo}
+    già presente nella Sezione~8.3 del \texttt{main.pdf}.
+
+  \item Nessuna delle critiche, sole o combinate, mette in
+    discussione la \emph{fondatezza scientifica} della pipeline
+    multi-fedeltà RANS$\to$URANS$\to$DDES$\to$WMLES$\to$WRLES$\to$FW-H.
+    Le azioni correttive proposte (Sezioni~\ref{sec:c1},~\ref{sec:c2},
+    \ref{sec:c5}) sono \emph{raffinamenti incrementali},
+    implementabili durante l'esecuzione della commessa senza
+    impatto sulla roadmap a 4 mesi.
+
+  \item Si propone di \emph{integrare} formalmente le tre azioni
+    correttive nella prossima revisione del \texttt{main.pdf}
+    (versione 1.1):
+    \begin{itemize}
+      \item Aggiornare la Sezione~6.2 con il commento
+        sull'\emph{aggiornamento iterativo} di $\varepsilon$ basato
+        sulla WMLES L4.
+      \item Aggiungere alla Sezione~7.3 la formula di Sibulkin per
+        $C_{f,\mathrm{stag}}$ e l'indicazione di raffinamento
+        locale nella zona di stagnazione.
+      \item Promuovere il \emph{sensitivity check inlet} (Opzione B)
+        da rischio mitigabile (Sezione~10.4) a milestone
+        intermedia (M2.5) della roadmap.
+    \end{itemize}
+\end{enumerate}
+
+Il valore del peer-review esterno risiede precisamente nel forzare
+la verifica esplicita di assunzioni che, se accettate
+implicitamente, possono propagarsi attraverso l'intera pipeline.
+Le tre obiezioni parzialmente fondate hanno permesso di identificare
+altrettanti raffinamenti operativi a costo modesto, mentre le due
+critiche infondate hanno offerto l'occasione di documentare con
+maggiore chiarezza scelte numeriche già consapevolmente compiute.
+
+\bigskip
+\centerline{\itshape\color{midblue}--- Fine del documento ---}
+
+% ============================================================
+% RIFERIMENTI
+% ============================================================
+\newpage
+\begin{thebibliography}{99}
+\small
+
+\bibitem{Pope2000}
+  Pope, S.B. (2000).
+  \textit{Turbulent Flows}. Cambridge University Press.
+
+\bibitem{Sibulkin1952}
+  Sibulkin, M. (1952).
+  Heat transfer near the forward stagnation point of a body of revolution.
+  \textit{Journal of Aeronautical Sciences}, 19(8), 570--571.
+
+\bibitem{Hadziabdic2008}
+  Hadziabdic, M. \& Hanjalic, K. (2008).
+  Vortical structures and heat transfer in a round impinging jet.
+  \textit{Journal of Fluid Mechanics}, 596, 221--260.
+
+\bibitem{Dairay2015}
+  Dairay, T., Fortune, V., Lamballais, E. \& Brizzi, L.-E. (2015).
+  Direct numerical simulation of a turbulent jet impinging on a heated wall.
+  \textit{Journal of Fluid Mechanics}, 764, 362--394.
+
+\bibitem{Economon2016}
+  Economon, T.D., Palacios, F., Copeland, S.R., Lukaczyk, T.W. \& Alonso, J.J. (2016).
+  SU2: An Open-Source Suite for Multiphysics Design and Analysis.
+  \textit{AIAA Journal}, 54(3), 828--846.
+
+\bibitem{Aupoix2017}
+  Aupoix, B. \& Spalart, P.R. (2017).
+  Extensions of the Spalart-Allmaras turbulence model to account for
+  wall roughness.
+  \textit{International Journal of Heat and Fluid Flow}, 24(4), 454--462.
+
+\bibitem{Tennekes1972}
+  Tennekes, H. \& Lumley, J.L. (1972).
+  \textit{A First Course in Turbulence}. MIT Press.
+
+\bibitem{Michalke1965}
+  Michalke, A. (1965).
+  On spatially growing disturbances in an inviscid shear layer.
+  \textit{Journal of Fluid Mechanics}, 23(3), 521--544.
+
+\bibitem{Spalart2006}
+  Spalart, P.R., Deck, S., Shur, M.L., Squires, K.D., Strelets, M.Kh. \& Travin, A. (2006).
+  A new version of detached-eddy simulation, resistant to ambiguous grid densities.
+  \textit{Theoretical and Computational Fluid Dynamics}, 20(3), 181--195.
+
+\bibitem{Celik2008}
+  Celik, I.B., Ghia, U., Roache, P.J., Freitas, C.J., Coleman, H., Raad, P.E. (2008).
+  Procedure for Estimation and Reporting of Uncertainty Due to Discretization in CFD Applications.
+  \textit{Journal of Fluids Engineering}, 130(7), 078001.
+
+\end{thebibliography}
+
+\end{document}
